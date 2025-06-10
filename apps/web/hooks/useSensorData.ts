@@ -1,6 +1,6 @@
 import { SENSOR_CONFIG } from "@/lib/config";
 import { isValidSensorData, parseSensorData } from "@/lib/sensorDataParser";
-import type { MqttMessage, SensorData } from "@/lib/types";
+import type { DeviceData, MqttMessage } from "@/lib/types";
 import { useCallback, useMemo, useState } from "react";
 import useMqtt from "./useMqtt";
 
@@ -13,7 +13,7 @@ export default function useSensorData({
   mqttUri,
   sensorTopic,
 }: UseSensorDataProps) {
-  const [sensorData, setSensorData] = useState<SensorData>(
+  const [deviceData, setDeviceData] = useState<DeviceData>(
     SENSOR_CONFIG.DEFAULT_VALUES
   );
 
@@ -21,7 +21,7 @@ export default function useSensorData({
     const parsedData = parseSensorData(message);
 
     if (parsedData && isValidSensorData(parsedData)) {
-      setSensorData((prev) => ({
+      setDeviceData((prev) => ({
         ...prev,
         ...parsedData,
       }));
@@ -45,12 +45,21 @@ export default function useSensorData({
   });
 
   const isLoading =
-    sensorData.temperature === 0 &&
-    sensorData.humidity === 0 &&
-    sensorData.co2 === 0;
+    deviceData.temperature === 0 &&
+    deviceData.humidity === 0 &&
+    deviceData.co2 === 0;
 
   return {
-    sensorData,
+    sensorData: {
+      temperature: deviceData.temperature,
+      humidity: deviceData.humidity,
+      co2: deviceData.co2,
+    },
+    actorData: {
+      window: deviceData.window,
+      light: deviceData.light,
+    },
+    deviceData,
     isLoading,
     connectionState,
     publish,

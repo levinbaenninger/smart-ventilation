@@ -3,42 +3,44 @@
 import { SmartVentilationDashboard } from "@/components/smart-ventilation-dashboard";
 import useSensorData from "@/hooks/useSensorData";
 import { MQTT_CONFIG } from "@/lib/config";
-import { useState } from "react";
 
 export default function Page() {
-  const [isWindowOpen, setIsWindowOpen] = useState(false);
-  const [isLightOn, setIsLightOn] = useState(false);
-
-  const { sensorData, connectionState, publish } = useSensorData({
+  const { sensorData, actorData, connectionState, publish } = useSensorData({
     mqttUri: MQTT_CONFIG.URI,
     sensorTopic: MQTT_CONFIG.TOPICS.SENSOR_DATA,
   });
 
-  const handleToggleWindow = () => {
-    setIsWindowOpen(!isWindowOpen);
-    // TODO: Publish window control message
-    // publishMessage(MQTT_CONFIG.TOPICS.DEVICE_CONTROL, { window: !isOpen });
+  const handleToggleWindow = async () => {
+    await publishControlMessage();
   };
 
-  const handleToggleLight = () => {
-    setIsLightOn(!isLightOn);
-    // TODO: Publish light control message
-    // publishMessage(MQTT_CONFIG.TOPICS.DEVICE_CONTROL, { light: !isLightOn });
+  const handleToggleLight = async () => {
+    await publishControlMessage();
   };
 
-  const publishMessage = async (topic: string, message: object) => {
+  const publishControlMessage = async () => {
     try {
-      await publish(topic, message);
+      const downlinkMessage = {
+        downlinks: [
+          {
+            f_port: 1,
+            frm_payload: "AQ==",
+            confirmed: true,
+          },
+        ],
+      };
+
+      await publish(MQTT_CONFIG.TOPICS.DEVICE_CONTROL, downlinkMessage);
     } catch (error) {
-      console.error("Failed to publish message:", error);
+      console.error("Failed to publish control message:", error);
     }
   };
 
   return (
     <SmartVentilationDashboard
       sensorData={sensorData}
-      isWindowOpen={isWindowOpen}
-      isLightOn={isLightOn}
+      isWindowOpen={actorData.window === 1}
+      isLightOn={actorData.light === 1}
       connectionState={connectionState}
       onToggleWindow={handleToggleWindow}
       onToggleLight={handleToggleLight}

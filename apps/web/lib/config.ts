@@ -25,5 +25,7 @@ export const SENSOR_CONFIG = {
     temperature: 0,
     humidity: 0,
     co2: 0,
+    window: 0,
+    light: 0,
   },
 } as const;
