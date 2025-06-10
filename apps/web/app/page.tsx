@@ -1,39 +1,47 @@
 "use client";
 
-import { Widget } from "@/components/widget";
-import { Badge } from "@workspace/ui/components/badge";
-import { Button } from "@workspace/ui/components/button";
+import { SmartVentilationDashboard } from "@/components/smart-ventilation-dashboard";
+import useSensorData from "@/hooks/useSensorData";
+import { MQTT_CONFIG } from "@/lib/config";
 import { useState } from "react";
 
 export default function Page() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isWindowOpen, setIsWindowOpen] = useState(false);
   const [isLightOn, setIsLightOn] = useState(false);
 
+  const { sensorData, connectionState, publish } = useSensorData({
+    mqttUri: MQTT_CONFIG.URI,
+    sensorTopic: MQTT_CONFIG.TOPICS.SENSOR_DATA,
+  });
+
+  const handleToggleWindow = () => {
+    setIsWindowOpen(!isWindowOpen);
+    // TODO: Publish window control message
+    // publishMessage(MQTT_CONFIG.TOPICS.DEVICE_CONTROL, { window: !isOpen });
+  };
+
+  const handleToggleLight = () => {
+    setIsLightOn(!isLightOn);
+    // TODO: Publish light control message
+    // publishMessage(MQTT_CONFIG.TOPICS.DEVICE_CONTROL, { light: !isLightOn });
+  };
+
+  const publishMessage = async (topic: string, message: object) => {
+    try {
+      await publish(topic, message);
+    } catch (error) {
+      console.error("Failed to publish message:", error);
+    }
+  };
+
   return (
-    <div className="flex items-center justify-center min-h-svh">
-      <div className="flex flex-col items-center justify-center gap-4">
-        <section className="flex gap-2">
-          <Badge variant={isOpen ? "success" : "destructive"}>
-            {isOpen ? "Fenster offen" : "Fenster geschlossen"}
-          </Badge>
-          <Badge variant={isLightOn ? "success" : "destructive"}>
-            {isLightOn ? "Licht an" : "Licht aus"}
-          </Badge>
-        </section>
-        <section className="flex gap-4">
-          <Widget title="🌡️ Temperatur" value="20°C" />
-          <Widget title="💧 Luftfeuchtigkeit" value="50%" />
-          <Widget title="💨 Luftqualität" value="340 ppm" />
-        </section>
-        <section className="w-full flex gap-4">
-          <Button className="flex-1" onClick={() => setIsOpen(!isOpen)}>
-            Fenster {isOpen ? "öffnen" : "schliessen"}
-          </Button>
-          <Button className="flex-1" onClick={() => setIsLightOn(!isLightOn)}>
-            Licht {isLightOn ? "an" : "aus"}
-          </Button>
-        </section>
-      </div>
-    </div>
+    <SmartVentilationDashboard
+      sensorData={sensorData}
+      isWindowOpen={isWindowOpen}
+      isLightOn={isLightOn}
+      connectionState={connectionState}
+      onToggleWindow={handleToggleWindow}
+      onToggleLight={handleToggleLight}
+    />
   );
 }

@@ -4,22 +4,34 @@ import {
   CardHeader,
   CardTitle,
 } from "@workspace/ui/components/card";
+import { Skeleton } from "@workspace/ui/components/skeleton";
 
-interface Props {
+interface WidgetProps {
   title: string;
   value: string;
 }
 
-export function Widget({ title, value }: Props) {
+export function Widget({ title, value }: WidgetProps) {
   return (
-    <Card className="w-50 gap-2">
+    <Card className="flex-1 gap-2">
       <CardHeader>
         <CardTitle>{title}</CardTitle>
       </CardHeader>
       <CardContent>
-        <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">
-          {value}
-        </h2>
+        <h2 className="text-3xl font-semibold tracking-tight">{value}</h2>
+      </CardContent>
+    </Card>
+  );
+}
+
+export function SkeletonWidget({ title }: { title: string }) {
+  return (
+    <Card className="flex-1 gap-2">
+      <CardHeader>
+        <CardTitle>{title}</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Skeleton className="h-10 w-20" />
       </CardContent>
     </Card>
   );
