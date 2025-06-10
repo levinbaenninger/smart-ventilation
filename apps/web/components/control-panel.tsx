@@ -19,17 +19,11 @@ interface ControlAction {
 
 interface ControlPanelProps {
   actions: ControlAction[];
-  orientation?: "horizontal" | "vertical";
 }
 
-export function ControlPanel({
-  actions,
-  orientation = "horizontal",
-}: ControlPanelProps) {
-  const orientationClass = orientation === "vertical" ? "flex-col" : "";
-
+export function ControlPanel({ actions }: ControlPanelProps) {
   return (
-    <section className={`w-full flex gap-4 ${orientationClass}`}>
+    <section className={`w-full flex flex-col sm:flex-row gap-4`}>
       {actions.map((action) => (
         <Button
           key={action.id}

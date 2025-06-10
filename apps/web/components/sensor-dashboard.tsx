@@ -38,7 +38,7 @@ export function SensorDashboard({
   sensors = DEFAULT_SENSORS,
 }: SensorDashboardProps) {
   return (
-    <section className={`w-full flex gap-4`}>
+    <section className={`w-full flex flex-col sm:flex-row gap-4`}>
       {isLoading
         ? sensors.map((sensor) => (
             <SkeletonWidget key={sensor.key} title={sensor.title} />
