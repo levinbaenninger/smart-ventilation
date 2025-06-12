@@ -1,4 +1,5 @@
 import type { MqttConnectionState, SensorData } from "@/lib/types";
+import { ConnectionAlert } from "./connection-alert";
 import { DeviceControlPanel } from "./control-panel";
 import { SensorDashboard, useSensorLoading } from "./sensor-dashboard";
 import { DeviceStatusBadges } from "./status-badges";
@@ -37,6 +38,8 @@ export function SmartVentilationDashboard({
           onToggleLight={onToggleLight}
           disabled={isDisconnected}
         />
+
+        {isDisconnected && <ConnectionAlert />}
       </div>
     </div>
   );
