@@ -28,7 +28,6 @@ export default function useSensorData({
     }
   }, []);
 
-  // Memoize the topic handlers array to prevent recreation on every render
   const topicHandlers = useMemo(
     () => [
       {
@@ -47,7 +46,9 @@ export default function useSensorData({
   const isLoading =
     deviceData.temperature === 0 &&
     deviceData.humidity === 0 &&
-    deviceData.co2 === 0;
+    deviceData.co2 === 0 &&
+    deviceData.window === 0 &&
+    deviceData.light === 0;
 
   return {
     sensorData: {

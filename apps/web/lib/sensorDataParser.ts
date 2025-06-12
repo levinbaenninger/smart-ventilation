@@ -10,7 +10,12 @@ export const parseSensorData = (
 
     const deviceData: Partial<DeviceData> = {};
 
-    // Parse sensor data
+    if (typeof decoded.analog_in_1 === "number") {
+      deviceData.co2 = Math.round(
+        decoded.analog_in_1 * SENSOR_CONFIG.CO2_MULTIPLIER
+      );
+    }
+
     if (typeof decoded.analog_in_2 === "number") {
       deviceData.temperature = decoded.analog_in_2;
     }
@@ -19,13 +24,6 @@ export const parseSensorData = (
       deviceData.humidity = decoded.analog_in_3;
     }
 
-    if (typeof decoded.analog_in_1 === "number") {
-      deviceData.co2 = Math.round(
-        decoded.analog_in_1 * SENSOR_CONFIG.CO2_MULTIPLIER
-      );
-    }
-
-    // Parse actor data (digital values: 0 or 1)
     if (typeof decoded.digital_in_1 === "number") {
       deviceData.window = decoded.digital_in_1;
     }
@@ -46,7 +44,7 @@ export const isValidSensorData = (data: Partial<DeviceData>): boolean => {
     data.temperature ||
     data.humidity ||
     data.co2 ||
-    data.window !== undefined ||
-    data.light !== undefined
+    data.window ||
+    data.light
   );
 };
