@@ -1,7 +1,9 @@
 "use client";
 
 import { SmartVentilationDashboard } from "@/components/smart-ventilation-dashboard";
+import { useDeviceControl } from "@/hooks/useDeviceControl";
 import useSensorData from "@/hooks/useSensorData";
+import { useTransformedData } from "@/hooks/useTransformedData";
 import useWeatherData from "@/hooks/useWeatherData";
 import { MQTT_CONFIG } from "@/lib/config";
 
@@ -16,37 +18,14 @@ export default function Page() {
     sensorTopic: MQTT_CONFIG.TOPICS.SENSOR_DATA,
   });
 
-  const { weatherData, isLoading: isWeatherLoading } = useWeatherData();
-
-  const sensorData = {
-    ...sensorDataRaw,
-    outdoorTemperature: weatherData.temperature,
-  };
-
-  const handleToggleWindow = async () => {
-    await publishControlMessage("MQ==");
-  };
-
-  const handleToggleLight = async () => {
-    await publishControlMessage("MA==");
-  };
-
-  const publishControlMessage = async (payload: string) => {
-    try {
-      const downlinkMessage = {
-        downlinks: [
-          {
-            f_port: 1,
-            frm_payload: payload,
-            confirmed: true,
-          },
-        ],
-      };
-      await publish(MQTT_CONFIG.TOPICS.DEVICE_CONTROL, downlinkMessage);
-    } catch (error) {
-      console.error("Failed to publish control message:", error);
-    }
-  };
+  const { weatherData } = useWeatherData();
+  const { handleToggleWindow, handleToggleLight } = useDeviceControl({
+    publish,
+  });
+  const sensorData = useTransformedData({
+    sensorData: sensorDataRaw,
+    weatherData,
+  });
 
   return (
     <SmartVentilationDashboard

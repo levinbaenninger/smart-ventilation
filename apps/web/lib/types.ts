@@ -41,3 +41,8 @@ export interface MqttConnectionState {
   isConnecting: boolean;
   error: string | null;
 }
+
+export type MqttPublishFunction = (
+  topic: string,
+  message: any
+) => Promise<void>;
