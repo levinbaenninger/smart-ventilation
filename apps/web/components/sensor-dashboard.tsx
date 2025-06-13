@@ -17,7 +17,12 @@ interface SensorDashboardProps {
 const DEFAULT_SENSORS: SensorConfig[] = [
   {
     key: "temperature",
-    title: "🌡️ Temperatur",
+    title: "🌡️ Innentemperatur",
+    formatValue: (value) => `${value}°C`,
+  },
+  {
+    key: "outdoorTemperature",
+    title: "🌡️ Aussentemperatur",
     formatValue: (value) => `${value}°C`,
   },
 ];

@@ -1,5 +1,6 @@
 export interface SensorData {
   temperature: number;
+  outdoorTemperature: number;
 }
 
 export interface ActorData {

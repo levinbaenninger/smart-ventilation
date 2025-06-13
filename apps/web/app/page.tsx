@@ -2,13 +2,26 @@
 
 import { SmartVentilationDashboard } from "@/components/smart-ventilation-dashboard";
 import useSensorData from "@/hooks/useSensorData";
+import useWeatherData from "@/hooks/useWeatherData";
 import { MQTT_CONFIG } from "@/lib/config";
 
 export default function Page() {
-  const { sensorData, actorData, connectionState, publish } = useSensorData({
+  const {
+    sensorData: sensorDataRaw,
+    actorData,
+    connectionState,
+    publish,
+  } = useSensorData({
     mqttUri: MQTT_CONFIG.URI,
     sensorTopic: MQTT_CONFIG.TOPICS.SENSOR_DATA,
   });
+
+  const { weatherData, isLoading: isWeatherLoading } = useWeatherData();
+
+  const sensorData = {
+    ...sensorDataRaw,
+    outdoorTemperature: weatherData.temperature,
+  };
 
   const handleToggleWindow = async () => {
     await publishControlMessage("MQ==");
