@@ -20,16 +20,6 @@ const DEFAULT_SENSORS: SensorConfig[] = [
     title: "🌡️ Temperatur",
     formatValue: (value) => `${value}°C`,
   },
-  {
-    key: "humidity",
-    title: "💧 Luftfeuchtigkeit",
-    formatValue: (value) => `${value}%`,
-  },
-  {
-    key: "co2",
-    title: "💨 Luftqualität",
-    formatValue: (value) => `${value} ppm`,
-  },
 ];
 
 export function SensorDashboard({
@@ -55,9 +45,5 @@ export function SensorDashboard({
 }
 
 export function useSensorLoading(sensorData: SensorData): boolean {
-  return (
-    sensorData.temperature === 0 &&
-    sensorData.humidity === 0 &&
-    sensorData.co2 === 0
-  );
+  return sensorData.temperature === 0;
 }

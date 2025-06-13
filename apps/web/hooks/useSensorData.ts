@@ -45,16 +45,12 @@ export default function useSensorData({
 
   const isLoading =
     deviceData.temperature === 0 &&
-    deviceData.humidity === 0 &&
-    deviceData.co2 === 0 &&
     deviceData.window === 0 &&
     deviceData.light === 0;
 
   return {
     sensorData: {
       temperature: deviceData.temperature,
-      humidity: deviceData.humidity,
-      co2: deviceData.co2,
     },
     actorData: {
       window: deviceData.window,

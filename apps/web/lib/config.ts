@@ -19,12 +19,8 @@ export const MQTT_CONFIG = {
 } as const;
 
 export const SENSOR_CONFIG = {
-  CO2_MULTIPLIER: 330,
-
   DEFAULT_VALUES: {
     temperature: 0,
-    humidity: 0,
-    co2: 0,
     window: 0,
     light: 0,
   },

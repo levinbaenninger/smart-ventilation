@@ -24,12 +24,11 @@ export default function Page() {
         downlinks: [
           {
             f_port: 1,
-            frm_payload: "AQ==",
+            frm_payload: "dGVzdA==",
             confirmed: true,
           },
         ],
       };
-
       await publish(MQTT_CONFIG.TOPICS.DEVICE_CONTROL, downlinkMessage);
     } catch (error) {
       console.error("Failed to publish control message:", error);
