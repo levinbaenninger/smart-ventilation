@@ -14,14 +14,7 @@ export default function useWeatherData() {
   useEffect(() => {
     const fetchWeatherData = async () => {
       try {
-        console.log(
-          "OPENWEATHER_API_KEY",
-          process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY
-        );
-
-        const response = await fetch(
-          `https://api.openweathermap.org/data/3.0/onecall?lat=47.4370506&lon=9.1333201&units=metric&appid=${process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY}`
-        );
+        const response = await fetch("/api/weather");
 
         if (!response.ok) {
           throw new Error("Failed to fetch weather data");
@@ -29,7 +22,7 @@ export default function useWeatherData() {
 
         const data = await response.json();
         setWeatherData({
-          temperature: data.current.temp,
+          temperature: data.temperature,
         });
         setError(null);
       } catch (err) {
