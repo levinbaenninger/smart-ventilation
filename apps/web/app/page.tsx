@@ -11,20 +11,20 @@ export default function Page() {
   });
 
   const handleToggleWindow = async () => {
-    await publishControlMessage();
+    await publishControlMessage("MQ==");
   };
 
   const handleToggleLight = async () => {
-    await publishControlMessage();
+    await publishControlMessage("MA==");
   };
 
-  const publishControlMessage = async () => {
+  const publishControlMessage = async (payload: string) => {
     try {
       const downlinkMessage = {
         downlinks: [
           {
             f_port: 1,
-            frm_payload: "dGVzdA==",
+            frm_payload: payload,
             confirmed: true,
           },
         ],
