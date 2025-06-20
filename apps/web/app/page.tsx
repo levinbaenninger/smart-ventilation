@@ -16,6 +16,8 @@ export default function Page() {
   } = useSensorData({
     mqttUri: MQTT_CONFIG.URI,
     sensorTopic: MQTT_CONFIG.TOPICS.SENSOR_DATA,
+    lightSensorTopic: MQTT_CONFIG.TOPICS.LIGHT_SENSOR,
+    windowSensorTopic: MQTT_CONFIG.TOPICS.WINDOW_SENSOR,
   });
 
   const { weatherData } = useWeatherData();

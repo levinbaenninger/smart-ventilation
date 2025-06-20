@@ -1,3 +1,4 @@
+import { SENSOR_CONFIG } from "@/lib/config";
 import type { SensorData } from "@/lib/types";
 import { SkeletonWidget, Widget } from "./widget";
 
@@ -21,9 +22,15 @@ const DEFAULT_SENSORS: SensorConfig[] = [
     formatValue: (value) => `${value}°C`,
   },
   {
-    key: "outdoorTemperature",
-    title: "🌡️ Aussentemperatur",
-    formatValue: (value) => `${value}°C`,
+    key: "co2",
+    title: "🌬 CO2",
+    formatValue: (value) =>
+      `${Math.round(value * SENSOR_CONFIG.CO2_MULTIPLIER)}ppm`,
+  },
+  {
+    key: "humidity",
+    title: "💧 Luftfeuchtigkeit",
+    formatValue: (value) => `${value}%`,
   },
 ];
 

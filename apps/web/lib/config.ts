@@ -4,8 +4,14 @@ export const MQTT_CONFIG = {
   TOPICS: {
     SENSOR_DATA:
       "v3/app-iot-wuerfel-klassensatz-b@ttn/devices/eui-2024-c-39/up",
-    DEVICE_CONTROL:
+    LIGHT_SENSOR:
+      "v3/app-iot-wuerfel-klassensatz-b@ttn/devices/eui-2024-c-39/up",
+    WINDOW_SENSOR:
+      "v3/app-iot-wuerfel-klassensatz-b@ttn/devices/eui-2024-c-08/up",
+    LIGHT_CONTROL:
       "v3/app-iot-wuerfel-klassensatz-b@ttn/devices/eui-2024-c-39/down/push",
+    WINDOW_CONTROL:
+      "v3/app-iot-wuerfel-klassensatz-b@ttn/devices/eui-2024-c-08/down/push",
   },
 
   OPTIONS: {
@@ -19,8 +25,12 @@ export const MQTT_CONFIG = {
 } as const;
 
 export const SENSOR_CONFIG = {
+  CO2_MULTIPLIER: 330,
+
   DEFAULT_VALUES: {
     temperature: 0,
+    co2: 0,
+    humidity: 0,
     window: 0,
     light: 0,
     outdoorTemperature: 0,
