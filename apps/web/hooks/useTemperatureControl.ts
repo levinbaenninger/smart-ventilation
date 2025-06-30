@@ -1,5 +1,5 @@
 import type { SensorData, WeatherData } from "@/lib/types";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 interface UseTemperatureControlProps {
   sensorData: SensorData;
@@ -8,8 +8,6 @@ interface UseTemperatureControlProps {
   isLightOn: boolean;
   onToggleWindow: () => void;
   onToggleLight: () => void;
-  highThreshold?: number;
-  lowThreshold?: number;
 }
 
 export function useTemperatureControl({
@@ -19,23 +17,39 @@ export function useTemperatureControl({
   isLightOn,
   onToggleWindow,
   onToggleLight,
-  highThreshold = 25,
-  lowThreshold = 21,
 }: UseTemperatureControlProps) {
+  const lastActionRef = useRef<number>(0);
+  const TEMPERATURE_HYSTERESIS = 1; // 1°C buffer to prevent rapid switching
+
   useEffect(() => {
     const temperature = sensorData.temperature;
+    const outdoorTemp = weatherData.outdoorTemperature;
+    const outdoorHumidity = weatherData.outdoorHumidity;
+    const now = Date.now();
+    const MIN_ACTION_INTERVAL = 30000; // 30 seconds minimum between actions
 
+    // Prevent rapid toggling
+    if (now - lastActionRef.current < MIN_ACTION_INTERVAL) {
+      return;
+    }
+
+    // Open window: when closed, outdoor is significantly cooler, and humidity is acceptable
     if (
-      temperature >= highThreshold &&
       !isWindowOpen &&
-      weatherData.outdoorHumidity < 70 &&
-      weatherData.outdoorTemperature < temperature
+      outdoorHumidity < 70 &&
+      outdoorTemp < temperature - TEMPERATURE_HYSTERESIS
     ) {
       onToggleWindow();
       if (isLightOn) onToggleLight();
-    } else if (temperature <= lowThreshold && isWindowOpen) {
+      lastActionRef.current = now;
+    }
+    // Close window: when open and outdoor is significantly warmer
+    else if (
+      isWindowOpen &&
+      outdoorTemp > temperature + TEMPERATURE_HYSTERESIS
+    ) {
       onToggleWindow();
-      if (!isLightOn) onToggleLight();
+      lastActionRef.current = now;
     }
   }, [
     sensorData.temperature,
@@ -43,9 +57,5 @@ export function useTemperatureControl({
     weatherData.outdoorTemperature,
     isWindowOpen,
     isLightOn,
-    highThreshold,
-    lowThreshold,
-    onToggleWindow,
-    onToggleLight,
   ]);
 }
