@@ -32,17 +32,6 @@ export default function useSensorData({
     }
   }, []);
 
-  const handleWindowMessage = useCallback((message: MqttMessage) => {
-    const parsedData = parseSensorData(message);
-
-    if (parsedData && isValidSensorData(parsedData)) {
-      setDeviceData((prev) => ({
-        ...prev,
-        window: parsedData.window ?? 0,
-      }));
-    }
-  }, []);
-
   const topicHandlers = useMemo(
     () => [
       {
@@ -55,7 +44,7 @@ export default function useSensorData({
       },
       {
         topic: windowSensorTopic,
-        handler: handleWindowMessage,
+        handler: handleSensorMessage,
       },
     ],
     [sensorTopic, lightSensorTopic, windowSensorTopic, handleSensorMessage]
