@@ -1,23 +1,28 @@
 import { MQTT_CONFIG } from "@/lib/config";
 import type { MqttPublishFunction } from "@/lib/types";
 
+const DEVICE_CONTROLS = {
+  WINDOW: "MQ==",
+  LIGHT: "MA==",
+};
+
 interface UseDeviceControlProps {
   publish: MqttPublishFunction;
 }
 
 export function useDeviceControl({ publish }: UseDeviceControlProps) {
-  const publishControlMessage = async (topic: string) => {
+  const publishControlMessage = async (payload: string) => {
     try {
       const downlinkMessage = {
         downlinks: [
           {
             f_port: 1,
-            frm_payload: "MQ==",
+            frm_payload: payload,
             confirmed: true,
           },
         ],
       };
-      await publish(topic, downlinkMessage);
+      await publish(MQTT_CONFIG.TOPICS.DEVICE_CONTROL, downlinkMessage);
     } catch (error) {
       console.error("Failed to publish control message:", error);
       throw error;
@@ -25,11 +30,11 @@ export function useDeviceControl({ publish }: UseDeviceControlProps) {
   };
 
   const handleToggleWindow = async () => {
-    await publishControlMessage(MQTT_CONFIG.TOPICS.WINDOW_CONTROL);
+    await publishControlMessage(DEVICE_CONTROLS.WINDOW);
   };
 
   const handleToggleLight = async () => {
-    await publishControlMessage(MQTT_CONFIG.TOPICS.LIGHT_CONTROL);
+    await publishControlMessage(DEVICE_CONTROLS.LIGHT);
   };
 
   return {

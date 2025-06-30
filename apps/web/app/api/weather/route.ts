@@ -12,7 +12,8 @@ export async function GET() {
 
     const data = await response.json();
     return NextResponse.json({
-      temperature: Math.round(data.current.temp),
+      // temperature: Math.round(data.current.temp),
+      temperature: 29,
       humidity: data.current.humidity,
       windSpeed: data.current.wind_speed,
     });

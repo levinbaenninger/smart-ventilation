@@ -5,12 +5,10 @@ export const MQTT_CONFIG = {
     SENSOR_DATA:
       "v3/app-iot-wuerfel-klassensatz-b@ttn/devices/eui-2024-c-39/up",
     LIGHT_SENSOR:
-      "v3/app-iot-wuerfel-klassensatz-b@ttn/devices/eui-2024-c-39/up",
+      "v3/app-iot-wuerfel-klassensatz-b@ttn/devices/eui-2024-c-08/up",
     WINDOW_SENSOR:
       "v3/app-iot-wuerfel-klassensatz-b@ttn/devices/eui-2024-c-08/up",
-    LIGHT_CONTROL:
-      "v3/app-iot-wuerfel-klassensatz-b@ttn/devices/eui-2024-c-39/down/push",
-    WINDOW_CONTROL:
+    DEVICE_CONTROL:
       "v3/app-iot-wuerfel-klassensatz-b@ttn/devices/eui-2024-c-08/down/push",
   },
 
