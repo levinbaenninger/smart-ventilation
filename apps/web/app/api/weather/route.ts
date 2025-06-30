@@ -11,7 +11,11 @@ export async function GET() {
     }
 
     const data = await response.json();
-    return NextResponse.json({ temperature: Math.round(data.current.temp) });
+    return NextResponse.json({
+      temperature: Math.round(data.current.temp),
+      humidity: data.current.humidity,
+      windSpeed: data.current.wind_speed,
+    });
   } catch (error) {
     console.error("Weather API error:", error);
     return NextResponse.json(

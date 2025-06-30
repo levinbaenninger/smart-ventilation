@@ -1,6 +1,7 @@
 import type { MqttConnectionState, SensorData } from "@/lib/types";
 import { ConnectionAlert } from "./connection-alert";
 import { DeviceControlPanel } from "./control-panel";
+import { OutdoorDataDashboard } from "./outdoor-data-dashboard";
 import { SensorDashboard, useSensorLoading } from "./sensor-dashboard";
 import { DeviceStatusBadges } from "./status-badges";
 
@@ -30,6 +31,7 @@ export function SmartVentilationDashboard({
         <DeviceStatusBadges isWindowOpen={isWindowOpen} isLightOn={isLightOn} />
 
         <SensorDashboard sensorData={sensorData} isLoading={isLoading} />
+        <OutdoorDataDashboard sensorData={sensorData} isLoading={isLoading} />
 
         <DeviceControlPanel
           isWindowOpen={isWindowOpen}

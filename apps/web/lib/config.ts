@@ -30,9 +30,10 @@ export const SENSOR_CONFIG = {
   DEFAULT_VALUES: {
     temperature: 0,
     co2: 0,
-    humidity: 0,
     window: 0,
     light: 0,
     outdoorTemperature: 0,
+    outdoorHumidity: 0,
+    outdoorWindSpeed: 0,
   },
 } as const;

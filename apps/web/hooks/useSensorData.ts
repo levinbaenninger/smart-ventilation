@@ -69,7 +69,9 @@ export default function useSensorData({
   const isLoading =
     deviceData.temperature === 0 &&
     deviceData.co2 === 0 &&
-    deviceData.humidity === 0 &&
+    deviceData.outdoorTemperature === 0 &&
+    deviceData.outdoorHumidity === 0 &&
+    deviceData.outdoorWindSpeed === 0 &&
     deviceData.window === 0 &&
     deviceData.light === 0;
 
@@ -77,7 +79,9 @@ export default function useSensorData({
     sensorData: {
       temperature: deviceData.temperature,
       co2: deviceData.co2,
-      humidity: deviceData.humidity,
+      outdoorTemperature: deviceData.outdoorTemperature,
+      outdoorHumidity: deviceData.outdoorHumidity,
+      outdoorWindSpeed: deviceData.outdoorWindSpeed,
     },
     actorData: {
       window: deviceData.window,

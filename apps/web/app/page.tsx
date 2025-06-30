@@ -3,6 +3,7 @@
 import { SmartVentilationDashboard } from "@/components/smart-ventilation-dashboard";
 import { useDeviceControl } from "@/hooks/useDeviceControl";
 import useSensorData from "@/hooks/useSensorData";
+import { useTemperatureControl } from "@/hooks/useTemperatureControl";
 import { useTransformedData } from "@/hooks/useTransformedData";
 import useWeatherData from "@/hooks/useWeatherData";
 import { MQTT_CONFIG } from "@/lib/config";
@@ -24,9 +25,19 @@ export default function Page() {
   const { handleToggleWindow, handleToggleLight } = useDeviceControl({
     publish,
   });
+
   const sensorData = useTransformedData({
     sensorData: sensorDataRaw,
     weatherData,
+  });
+
+  useTemperatureControl({
+    sensorData,
+    weatherData,
+    isWindowOpen: actorData.window === 1,
+    isLightOn: actorData.light === 1,
+    onToggleWindow: handleToggleWindow,
+    onToggleLight: handleToggleLight,
   });
 
   return (

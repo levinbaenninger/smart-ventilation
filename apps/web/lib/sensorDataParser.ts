@@ -17,10 +17,6 @@ export const parseSensorData = (
       deviceData.co2 = decoded.analog_in_2;
     }
 
-    if (typeof decoded.analog_in_3 === "number") {
-      deviceData.humidity = decoded.analog_in_3;
-    }
-
     if (typeof decoded.digital_in_4 === "number") {
       deviceData.light = decoded.digital_in_4;
     }
@@ -40,7 +36,8 @@ export const isValidSensorData = (data: Partial<DeviceData>): boolean => {
   return !!(
     data.temperature !== undefined ||
     data.co2 !== undefined ||
-    data.humidity !== undefined ||
+    data.outdoorTemperature !== undefined ||
+    data.outdoorWindSpeed !== undefined ||
     data.window !== undefined ||
     data.light !== undefined
   );

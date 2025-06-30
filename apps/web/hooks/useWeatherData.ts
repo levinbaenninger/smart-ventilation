@@ -1,12 +1,11 @@
+import type { WeatherData } from "@/lib/types";
 import { useEffect, useState } from "react";
-
-interface WeatherData {
-  temperature: number;
-}
 
 export default function useWeatherData() {
   const [weatherData, setWeatherData] = useState<WeatherData>({
-    temperature: 0,
+    outdoorTemperature: 0,
+    outdoorHumidity: 0,
+    outdoorWindSpeed: 0,
   });
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -22,7 +21,9 @@ export default function useWeatherData() {
 
         const data = await response.json();
         setWeatherData({
-          temperature: data.temperature,
+          outdoorTemperature: data.temperature,
+          outdoorHumidity: data.humidity,
+          outdoorWindSpeed: data.windSpeed,
         });
         setError(null);
       } catch (err) {

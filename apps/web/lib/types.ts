@@ -1,8 +1,9 @@
 export interface SensorData {
   temperature: number;
   co2: number;
-  humidity: number;
   outdoorTemperature: number;
+  outdoorHumidity: number;
+  outdoorWindSpeed: number;
 }
 
 export interface ActorData {
@@ -12,10 +13,15 @@ export interface ActorData {
 
 export interface DeviceData extends SensorData, ActorData {}
 
+export interface WeatherData {
+  outdoorTemperature: number;
+  outdoorHumidity: number;
+  outdoorWindSpeed: number;
+}
+
 export interface DecodedPayload {
   analog_in_1?: number; // Temperature sensor
   analog_in_2?: number; // CO2 sensor
-  analog_in_3?: number; // Humidity sensor
   digital_in_4?: number; // Light actor (0 or 1)
   digital_in_5?: number; // Window actor (0 or 1)
 }

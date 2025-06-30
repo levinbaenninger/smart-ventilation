@@ -1,4 +1,3 @@
-import { SENSOR_CONFIG } from "@/lib/config";
 import type { SensorData } from "@/lib/types";
 import { SkeletonWidget, Widget } from "./widget";
 
@@ -17,19 +16,23 @@ interface SensorDashboardProps {
 
 const DEFAULT_SENSORS: SensorConfig[] = [
   {
-    key: "temperature",
-    title: "🌡️ Innentemperatur",
+    key: "outdoorTemperature",
+    title: "🌡️ Aussentemperatur",
     formatValue: (value) => `${value}°C`,
   },
   {
-    key: "co2",
-    title: "🌬 CO2",
-    formatValue: (value) =>
-      `${Math.round(value * SENSOR_CONFIG.CO2_MULTIPLIER)}ppm`,
+    key: "outdoorHumidity",
+    title: "💧 Aussenluftfeuchtigkeit",
+    formatValue: (value) => `${value}%`,
+  },
+  {
+    key: "outdoorWindSpeed",
+    title: "🌬️ Windgeschwindigkeit",
+    formatValue: (value) => `${value}m/s`,
   },
 ];
 
-export function SensorDashboard({
+export function OutdoorDataDashboard({
   sensorData,
   isLoading,
   sensors = DEFAULT_SENSORS,

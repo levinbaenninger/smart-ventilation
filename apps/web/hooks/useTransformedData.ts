@@ -1,8 +1,8 @@
-import type { SensorData } from "@/lib/types";
+import type { SensorData, WeatherData } from "@/lib/types";
 
 interface UseTransformedDataProps {
-  sensorData: Pick<SensorData, "temperature" | "co2" | "humidity">;
-  weatherData: { temperature: number };
+  sensorData: Pick<SensorData, "temperature" | "co2">;
+  weatherData: WeatherData;
 }
 
 export function useTransformedData({
@@ -11,9 +11,10 @@ export function useTransformedData({
 }: UseTransformedDataProps): SensorData {
   const transformedData: SensorData = {
     temperature: sensorData.temperature,
-    outdoorTemperature: weatherData.temperature,
     co2: sensorData.co2,
-    humidity: sensorData.humidity,
+    outdoorTemperature: weatherData.outdoorTemperature,
+    outdoorHumidity: weatherData.outdoorHumidity,
+    outdoorWindSpeed: weatherData.outdoorWindSpeed,
   };
 
   return transformedData;
